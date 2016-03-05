@@ -11,7 +11,17 @@ fn main() {
     .exit_on_esc(true)
     .build()
     .unwrap();
+
+    let mut rotation: f64 = 0.0;
     for e in window {
+        match e.event {
+            Some(Event::Update(UpdateArgs { dt })) => {
+                rotation += 3.0 * dt;
+            }
+            _ => {
+            }
+        }
+
         e.draw_2d(|c, g| {
             clear([0.0, 0.0, 0.0, 1.0], g);
             let center = c.transform.trans(300.0, 300.0);
@@ -19,7 +29,7 @@ fn main() {
             let red = [1.0, 0.0, 0.0, 1.0];
             // translate the rectangle slightly so that it's centered;
             // otherwise only the top left corner would be centered
-            rectangle(red, square, center.trans(-50.0, -50.0), g);
+            rectangle(red, square, center.rot_rad(rotation).rot_rad(rotation).trans(-50.0, -50.0), g);
         });
     }
 }
