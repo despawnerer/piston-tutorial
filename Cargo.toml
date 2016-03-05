@@ -1,0 +1,7 @@
+[package]
+name = "piston-tutorial"
+version = "0.1.0"
+authors = ["Aleksei Voronov <despawn@gmail.com>"]
+
+[dependencies]
+piston_window = "0.38.0"
