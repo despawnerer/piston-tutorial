@@ -27,10 +27,10 @@ impl Game {
         }
     }
 
-    fn input(&mut self, inp: Input) {
-        match inp {
-            Input::Press(but) => {
-                match but {
+    fn input(&mut self, input: Input) {
+        match input {
+            Input::Press(button) => {
+                match button {
                     Button::Keyboard(Key::Up) => {
                         self.up_d = true;
                     }
@@ -46,8 +46,8 @@ impl Game {
                     _ => {}
                 }
             }
-            Input::Release(but) => {
-                match but {
+            Input::Release(button) => {
+                match button {
                     Button::Keyboard(Key::Up) => {
                         self.up_d = false;
                     }
@@ -67,32 +67,32 @@ impl Game {
         }
     }
 
-    fn update(&mut self, upd: UpdateArgs) {
-        self.rotation += 3.0 * upd.dt;
+    fn update(&mut self, update: UpdateArgs) {
+        self.rotation += 3.0 * update.dt;
 
         if self.up_d {
-            self.y += (-50.0) * upd.dt;
+            self.y += (-50.0) * update.dt;
         }
 
         if self.down_d {
-            self.y += (50.0) * upd.dt;
+            self.y += (50.0) * update.dt;
         }
 
         if self.left_d {
-            self.x += (-50.0) * upd.dt;
+            self.x += (-50.0) * update.dt;
         }
 
         if self.right_d {
-            self.x += (50.0) * upd.dt;
+            self.x += (50.0) * update.dt;
         }
     }
 
-    fn draw(&mut self, ren: RenderArgs, e: PistonWindow) {
+    fn render(&mut self, render: RenderArgs, e: PistonWindow) {
         e.draw_2d(|c, g| {
             clear([0.0, 0.0, 0.0, 1.0], g);
             let center = c.transform.trans(
-                (ren.width / 2) as f64,
-                (ren.height / 2) as f64
+                (render.width / 2) as f64,
+                (render.height / 2) as f64
             );
             let square = rectangle::square(0.0, 0.0, 100.0);
             let red = [1.0, 0.0, 0.0, 1.0];
@@ -117,14 +117,14 @@ fn main() {
     let mut game = Game::new();
     for e in window {
         match e.event {
-            Some(Event::Update(upd)) => {
-                game.update(upd);
+            Some(Event::Update(update)) => {
+                game.update(update);
             }
-            Some(Event::Render(ren)) => {
-                game.draw(ren, e);
+            Some(Event::Render(render)) => {
+                game.render(render, e);
             }
-            Some(Event::Input(inp)) => {
-                game.input(inp);
+            Some(Event::Input(input)) => {
+                game.input(input);
             }
             _ => {}
         }
